@@ -1,0 +1,161 @@
+---
+title: "RMarkdown zero"
+author: "William Mailil"
+date: "01-05-2026"
+output: "html_document"
+---
+##libraries
+```{r}
+library(sf)
+library(ggplot2)
+library(arrow)
+library(sfarrow)
+library(tidyverse)
+library(dplyr)
+library(stringr)
+```
+
+##**Loading and viewing GIST**
+```{r}
+# virker ikke, måske genstart
+# GIST <- st_read_parquet("data/GIST_v1-1.parquet")
+# virker, men det er en "arrow" function
+GI_metadata <- read_csv("data/GI_metadata.csv")
+GIST <- read_parquet("data/GIST_v1-1.parquet")
+glimpse(GIST)
+head(GIST)
+# vill lige være sikker på at jeg har de rigtige datatyper
+class(GIST$geometry)
+```
+
+##testing transliteration one a-piece
+```{r}
+# GIST %>% 
+  # filter(str_detect(lemmata, regex("ἀργυροποιός",ignore_case = TRUE))) %>% 
+  # select(lemmata)
+  
+  
+# works and gives me 207 results with τραπεζ
+# ἁλιεύς gives me 485 results!
+# ζευγοτρόφος does not give me any results
+# ἰατρός gives me 461 results
+# χρυσοχόος gives me 0 results
+# χρυσοπώλης give me 2 results
+# λιθολόγός gives me 0 results
+# ξυλουργός gives me 6 results?
+# ξυ|ός gives me 83,915 results, how do i limit it to either?
+# χρυσοπώλης|ξυλουργός gives me 8 results
+# these occupations that give me no results seem to be read correctly, compare χρυσοχόος = 0 hits with χρυσοπώλης = 2 hits, or λιθολόγός = 0 hits with the shorter λιθολόγ = 5 hits
+# some of these i would expect more hits from like the aforementioned λιθολόγός, meaning stonemason, giving 0 hits or ξυλουργός, meaning carpenter, giving only 6 hits. I also tried δοκοτέκτων which is another word for carpenter but this gave no hits.
+# i entered ἱερεύς which is a male priest and it gave me 5796 results omg!
+# i entered ἱέρεια which is a female priest and it gave 605 results
+# i entered μάγος (mage) for 42 hits which i will include
+# up to 14670 total hits now
+
+```
+
+##trying to load my whole catalogue and apply it
+```{r}
+occupation <- read_csv2("data/occupations_translit_v1-3.csv")
+# ok now to combine the two
+
+
+pattern <- paste(occupation$term_greek_transliterated, collapse = "|")
+GIST %>% 
+  filter(str_detect(lemmata, regex(pattern, ignore_case = TRUE))) %>% 
+  select(lemmata)
+
+
+# i think this is something called partial matching, which doesn't sound great, but it works with 9371 matches, which is something
+# ok i have found the occupation carpenter, ferryman, secretary, doctor, architect and cook so it can't be that bad. there is something relevant in every line and it is not "parital"
+# what should i do with this? i can still add more occupations independent of lewis and harris. adela suggested priest
+# note: i have 14.638 now that is more than a 50% increase, more fiddling is prob a good idea, the inclusion of the occupation priest specifically is responsible for this. How do i know priest refers to occupation on these inscriptions? I don't but i don't know for the other occupations either.
+# i have 14.671 now after going over my catalogue again
+
+```
+
+##extracting matches with corresponding row
+```{r}
+# this is going to take forever, but it works
+GIST %>% 
+  filter(str_detect(lemmata, regex(pattern, ignore_case = TRUE))) %>% 
+  mutate(matched_terms = str_extract_all(lemmata, regex(pattern, ignore_case = TRUE))) %>%
+  select(matched_terms, everything()) -> GIST_matched
+
+```
+
+
+##wrangling the data
+```{r}
+# GIST_matched %>% 
+  # count(urban_context)
+# Adela used this column
+
+# i wonder how many of my current matches are priests
+# test_list2 %>% 
+  # filter(str_detect(matched_terms, regex("ἱερεύς",ignore_case = TRUE))) %>% 
+  # select(matched_terms)
+# 3204 out of 7717 maybe i should just not use it?
+
+# i should fit them after the urban_context
+# GIST_matched %>%
+  # select(matched_terms, not_after, not_before, is_geotemporal, Longitude, Latitude, geometry, urban_context, PHI_ID) %>%
+  # filter(not_after<1454&not_before>-801, is_geotemporal == TRUE)%>% 
+  # arrange(desc(not_after)) -> GIST_matched_geotemporal_urban_context
+
+```
+##writting this into a .csv or no i should probably write this into a parquet
+
+```{r}
+
+# write_csv2(GIST_matched_neat, "data/GIST_matched_neat.csv")
+
+# read_csv2("data/GIST_matched_neat.csv") -> read_GIST_matched_neat
+
+# having trouble keeping the greek characters and geometry data intact
+# i should probably write this into a parquet
+
+# write_parquet(GIST_matched_neat, "data/GIST_matched_neat.parquet")
+
+# read_parquet("data/GIST_matched_neat.parquet") -> read_GIST_matched_neat
+
+# yeah parquet works!
+
+```
+
+
+##trying to unnest the matched_terms
+```{r}
+GIST_matched_neat_expanded_all <- GIST_matched_neat %>%
+  unnest(matched_terms)
+# i am up to 12974 matches again!
+
+# but it is probably best i unnest only uniques and not also dublicates.
+# this removes the dublicates before unnesting
+GIST_matched_neat_expanded <- GIST_matched_neat %>%
+  mutate(matched_terms = lapply(matched_terms, unique)) %>%
+  unnest(matched_terms)
+# ok this gives me 9760 terms
+# also i should test if this actually did what i wanted it to. maybe something like the pattern search from further above?
+# shit i should have kept the phi_id
+
+# GIST_matched_neat_expanded %>% 
+  # filter(str_detect(matched_terms, regex("ἱερεύς",ignore_case = TRUE))) %>% 
+  # select(matched_terms)
+# ok good GIST_matched_neat_expanded giver fewer matches than _all
+# i should probably get the harris or maybe lewis categories in 
+```
+
+##loading up the many HISCOs, hope i need them
+```{r}
+
+hisco_major <- read_csv("data/1hisco_major_groups.csv")
+hisco_minor <- read_csv("data/2hisco_minor_groups.csv")
+hisco_unit <- read_csv("data/3hisco_unit_groups.csv")
+hisco_full_codes <- read_csv("data/4hisco_full_codes.csv")
+
+
+
+
+```
+
