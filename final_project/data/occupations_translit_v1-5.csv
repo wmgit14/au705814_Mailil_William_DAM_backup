@@ -1,0 +1,247 @@
+﻿id;term_greek_transliterated;translation_eng;from;term_greek;hisco_major;harris_sector
+1;ἀγαλματοποιός;statue-maker;lewis;agalmatopoiós;1;Plastic Arts
+2;ἀγγειουργός;jar-maker;harris;angeiourgós;8;Household Goods
+3;ἀγγειουργός;maker of metal jars;lewis;angeiourgós;8;Metal-Working
+4;αἰπόλος;goatherd;lewis;aipólos;6;Food-Production
+5;ἀκέστρια;seamstress;lewis;akéstria;7;Clothing
+6;ἀλείπτρια;masseuse;harris;aleíptria;0;Miscellaneous Services
+7;ἁλιεύς;fisherman;lewis;halieús;6;Food-Production
+8;ἀλλαντοποιός;sausage-maker;lewis;allantopoiós;7;Food-Production
+9;ἀλλαντοπώλης;sausage-seller;lewis;allantopṓlēs;4;Food-Retail
+10;ἁλόπολις;salt-seller;lewis;halópolis;4;Food-Retail
+11;ἀλφιταμοιβός;barley-dealer;lewis;alphitamoibós;4;Food-Retail
+12;ἀλφιτοπώλης;barley-dealer;lewis;alphitopṓlēs;4;Food-Retail
+13;ἁμαξουργός;cartwright;lewis;hamaxourgós;8;Transport
+14;ἀμοργαντίνος;wool-worker;lewis;amorgantínos;7;Clothing
+15;ἀμπελουργός;vine-dresser;lewis;ampelourgós;6;Food-Production
+16;ἀμφορεαποιός;amphora-maker;harris;amphoreapoiós;8;Household Goods
+17;ἀμφορεαφόρος;amphora-carrier;harris;amphoreaphóros;9;Miscellaneous Services
+18;ἀνδραποδοκάπηλος;slave-dealer;lewis;andrapodokápēlos;4;Retail
+19;ἀνδριαντοποιός;statue-maker;lewis;andriantopoiós;1;Plastic Arts
+20;ἀνθρακεύς;charcoal-maker;harris;anthrakeús;7;Fuel
+21;ἀνθρακοπώλης;charcoal-seller;harris;anthrakopṓlēs;4;Retail
+22;ἀργυραμοιβός;money-changer;harris;argyramoibós;3;Finance
+23;ἀργυροκόπος;minter;harris;argyrokópos;8;Metal-Working
+24;ἀργυροποιός;silver-smith;harris;argyropoiós;8;Metal-Working
+25;ἀρτοκόπος;baker;lewis;artokópos;7;Food-Production
+26;ἀρτοποιός;baker;lewis;artopoiós;7;Food-Production
+27;ἀρτόπολις;bread-seller;harris;artópolis;4;Food-Retail
+28;ἀρτοπώλης;bread-seller;lewis;artopṓlēs;4;Food-Retail
+29;ἀρχιτέκτων;architect;harris;architéktōn;0;Building
+30;ἀσκοποιός;wineskin-maker;harris;askopoiós;8;Household Goods
+31;ἀσκοφόρος;wineskin-carrier;harris;askophóros;9;Miscellaneous Services
+32;ἀσπιδοπήγος;shield-maker;lewis;aspidopḗgos;8;Miscellaneous Services
+33;αὐλητής;flute-player;harris;aulētḗs;1;Performing Arts
+34;αὐλήτρις;flute-player;harris;aulḗtris;1;Performing Arts
+35;αὐλοποιός;flute-maker;lewis;aulopoiós;9;Plastic Arts
+36;αὐλοτρύπης;flute-maker;lewis;aulotrýpēs;9;Plastic Arts
+37;βαλανεύς;bathhouse-keeper;harris;balaneús;2;Miscellaneous Services
+38;βαφεύς;dyer;lewis;bapheús;7;Clothing
+39;βελονοπώλης;needle-seller;harris;belonopṓlēs;4;Retail
+40;βιβλιοπώλης;bookseller;lewis;bibliopṓlēs;4;Retail
+41;βουκόλος;cowherd;lewis;boukólos;6;Food-Production
+42;βουφόρβος;cowherd;lewis;bouphórbos;6;Food-Production
+43;βυρσοδέψης;tanner;harris;byrsodépsēs;7;Clothing
+44;βυρσοπώλης;leather-seller;lewis;byrsopṓlēs;4;Retail
+45;γελγοπώλης;garlic-seller;lewis;gelgopṓlēs;4;Food-Retail
+46;γεωμέτρης;surveyor/geometer;harris;geōmétrēs;0;Miscellaneous Services
+47;γεωργός;farmer;lewis;geōrgós;6;Food-Production
+48;γναφαλλουφάντης;flock-weaver;lewis;gnaphallouphántēs;7;Clothing
+49;γναφεύς;fuller;lewis;gnapheús;7;Clothing
+50;γραμματεύς;secretary;harris;grammateús;3;Miscellaneous Services
+51;γραμματιστής;elementary schoolteacher;harris;grammatistḗs;1;Education
+52;γραφεύς;painter;harris;grapheús;1;Plastic Arts
+53;δακτυλιογλύφος;gem-engraver;lewis;daktylioglýphos;8;Plastic Arts
+54;δακτυλιοποιός;ring-maker;lewis;daktyliopoiós;8;Plastic Arts
+55;δακτυλιουργός;ring-maker;lewis;daktyliourgós;8;Plastic Arts
+56;δαφνοπώλης;laurel-seller;lewis;daphnopṓlēs;4;Retail
+57;δειπνοποιός;caterer;harris;deipnopoiós;5;Miscellaneous Services
+58;διδάσκαλος;teacher;harris;didáskalos;1;Education
+59;διφθεροπώλης;leather-seller;lewis;diphtheropṓlēs;4;Retail
+60;δοιδυκοποιός;pestle-maker;lewis;doidykoopoiós;8;Household Goods
+61;δορύξος;spear-maker;lewis;dorýxos;8;Metal-Working
+62;δρεπανουργός;sickle-maker;lewis;drepanourgós;8;Metal-Working
+63;ἐγκαυτής;encaustic painter;harris;enkautḗs;1;Plastic Arts
+64;ἐγκριδοπώλης;honey-cake seller;lewis;enkridopṓlēs;4;Food-Retail
+65;ἐλαιοκόμος;olive-tender;lewis;elaiokómos;6;Food-Production
+66;ἐλαιολόγος;olive-picker;lewis;elaiológos;6;Food-Production
+67;ἐλαιοπώλης;olive-seller;lewis;elaiopṓlēs;4;Food-Retail
+68;ἔμπορος;merchant;harris;émporos;4;Retail
+69;ἐπίτροπος;overseer;harris;epítropos;2;Miscellaneous Services
+70;ἐργολάβος;contractor;harris;ergolábos;9;Building
+71;ἔριθος;wool-worker;lewis;érithos;7;Clothing
+72;ἐριοπλόκος;wool-weaver;lewis;erioplókos;7;Clothing
+73;ἐριοπώλης;wool-seller;lewis;eriopṓlēs;4;Retail
+74;ἑταίρα;call-girl;harris;hetaíra;5;Miscellaneous Services
+75;ζευγοτρόφος;teamster;harris;zeugotróphos;9;Transport
+76;ζωγράφος;painter, artist;harris;zōgráphos;1;Plastic Arts
+77;ἡδύοινος;dealer in sweet wine;lewis;hēdýoinos;4;Food-Retail
+78;ἡνιοποιεῖον;bridle-maker;lewis;hēniopoieîon;8;Miscellaneous Services
+79;θαλασιουργός;wool-worker;lewis;thalasiourgós;7;Clothing
+80;θυροποιός;door-maker;lewis;thyropoiós;9;Building
+81;θωρακοποιός;corselet-maker;lewis;thōrakopoiós;7;Clothing
+82;ἰατρός;doctor;harris;iatrós;1;Miscellaneous Services
+83;ἱματόπολις;clothes-seller;lewis;himatópolis;4;Retail
+84;ἱππικός;riding-trainer;harris;hippikós;1;Education
+85;ἰσχαδοπώλης;dried-fig seller;lewis;ischadopṓlēs;4;Food-Retail
+86;ἰχθυοπώλης;fishmonger;lewis;ichthyopṓlēs;4;Food-Retail
+87;καναβιουργός;"maker of kanaboi (frameworks, ""stick-figures"")";harris;kanabiourgós;9;Building
+88;κάπηλις;retail-salesperson;harris;kápēlis;4;Retail
+89;κάπηλος;retail-salesperson;harris;kápēlos;4;Retail
+90;κάπηλος ἀσπίδων;shield-seller;lewis;kápēlos aspídōn;4;Retail
+91;καρυοπώλης;nut-seller;lewis;karyopṓlēs;4;Food-Retail
+92;κελευστής;rowing-master;harris;keleustḗs;9;Transport
+93;κεραμεύς;potter;lewis;kerameús;8;Household Goods
+94;κηπουρός;gardner;lewis;kēpourós;6;Food-Production
+95;κηροπλάστης;wax-worker;harris;kēroplástēs;9;Plastic Arts
+96;κῆρυξ;auctioneer;lewis;kêryx;4;Miscellaneous Services
+97;κιθαριστής;kithara-player;lewis;kitharistḗs;1;Performing Arts
+98;κιθαρῳδός;one who plays the kithara and sings;lewis;kitharōidós;1;Performing Arts
+99;κλινοποιός;furniture-maker;lewis;klinopoiós;8;Household Goods
+100;κολληψός;glue-boiler;lewis;kollēpsós;7;Miscellaneous Services
+101;κομμώτρια;hairdresser;harris;kommṓtria;5;Miscellaneous Services
+102;κοπρολόγος;dung-collector;harris;koprológos;9;Miscellaneous Services
+103;κοσκινοποιός;sieve-maker;lewis;koskinopoiós;9;Household Goods
+104;κοσκινοπώλης;sieve-seller;lewis;koskinopṓlēs;4;Retail
+105;κουρεύς;barber;harris;koureús;5;Miscellaneous Services
+106;κρανοποιός;helmet-maker;lewis;kranopoiós;8;Metal-Working
+107;κρεοπώλης;butcher;lewis;kreopṓlēs;7;Food-Production
+108;κρομμυοπώλης;onion-seller;lewis;krommyopṓlēs;4;Food-Retail
+109;κυβερνήτης;helmsman;harris;kybernḗtēs;0;Transport
+110;κυμινοπώλης;cumin-seller;harris;kyminopṓlēs;4;Food-Retail
+111;κυρεβιοπώλης;bran-seller;lewis;kyrebiopṓlēs;4;Food-Retail
+112;λαχανόπολις;greengrocer;lewis;lachanópolis;4;Food-Retail
+113;ληκιθοπώλης;gruel-seller;lewis;lēkithopṓlēs;4;Food-Retail
+114;λιβανοπόλις;incense-seller;harris;libanópolis;4;Retail
+115;λιβανοπώλης;incense-seller;lewis;libanopṓlēs;4;Retail
+116;λιθοκόπος;stone-cutter;harris;lithokópos;9;Building
+117;λιθολόγος;mason;harris;lithológos;9;Building
+118;λιθουργός;stone-worker;lewis;lithourgós;9;Building
+119;λινοουργός;linen-worker;lewis;linourgós;7;Clothing
+120;λογογράφος;speech-writer;harris;logográphos;1;Miscellaneous Services
+121;λοφοποιός;crest-maker;lewis;lophopoiós;7;Miscellaneous Services
+122;λυροποιός;lyre-maker;lewis;lyropoiós;9;Plastic Arts
+123;λυχνοποιός;lamp-maker;lewis;lychnopoiós;8;Household Goods
+124;λυχνοπώλης;lamp-seller;lewis;lychnopṓlēs;4;Retail
+125;μάγειρος;cook;lewis;mágeiros;5;Miscellaneous Services
+126;μαία;midwife;harris;maîa;0;Miscellaneous Services
+127;μαχαιροποιός;knife-maker;lewis;machairopoiós;8;Metal-Working
+128;μελιτοπώλης;honey-seller;lewis;melitopṓlēs;4;Food-Retail
+129;μεμβραδοπώλης;sardine-seller;lewis;membradopṓlēs;4;Food-Retail
+130;μεταλλευτής;miner;harris;metalleutḗs;7;Metal-Working
+131;μηχανοποιός;engineer;harris;mēchanopoiós;0;Building
+132;μισθωτός;manual-labourer;harris;misthōtós;9;Miscellaneous Services
+133;μολυβδοκόπος;lead-cutter;harris;molybdokópos;8;Metal-Working
+134;μυλόθρος;miller;lewis;mylóthros;7;Food-Production
+135;μυλοκόπος;millstone-cutter;lewis;mylokópos;9;Miscellaneous Services
+136;μυρεψός;perfume-boiler;lewis;myrepsós;5;Miscellaneous Services
+137;μυροπώλης;perfumeseller;lewis;myropṓlēs;4;Retail
+138;μυστριοπώλης;spoon-seller;lewis;mystriopṓlēs;4;Retail
+139;ναύκληρος;ship-owner;harris;naúklēros;0;Transport
+140;ναυπηγός;shipwright;lewis;naupēgós;9;Building
+141;ναύτης;ferryman;harris;naútēs;9;Transport
+142;νευρορράφος;cobbler;lewis;neurorráphos;8;Clothing
+143;ξιφουργός;sword-maker;lewis;xiphourgós;8;Metal-Working
+144;ξυλουργός;carpenter;lewis;xylourgós;9;Building
+145;ὀβελισκοποιός;spit-maker;lewis;obeliskopoiós;8;Household Goods
+146;ὀβολοστάτης;lender of small amounts;harris;obolostátēs;4;Finance
+147;οἱ πελοφοροῦντες;carriers of clay;lewis;hoi pelophoroûntes;9;Miscellaneous Services
+148;οἰκοδόμος;housebuilder;harris;oikodómos;9;Building
+149;οἰνοπώλης;wine-seller;lewis;oinopṓlēs;4;Food-Retail
+150;ὁλμοποιός;trough-maker;lewis;holmopoiós;9;Miscellaneous Services
+151;ὀνηλάτης;ass-driver;lewis;onēlátēs;9;Transport
+152;ὀνοκόμος;ass-keeper;lewis;onokómos;9;Transport
+153;ὀρεοκόμος;muleteer;lewis;oreokómos;9;Transport
+154;ὀρνιθευτής;fowler/bird-catcher;lewis;ornitheutḗs;6;Miscellaneous Services
+155;ὀρτυγοθήρας;quail-catcher;lewis;ortygothḗras;6;Miscellaneous Services
+156;ὀρτυγοτρόφος;quail-rearer;lewis;ortygotróphos;6;Miscellaneous Services
+157;ὀρχήστρις;dancing girl;harris;orchḗstris;1;Performing Arts
+158;ὀσπριοπώλης;pulse-seller;lewis;ospriopṓlēs;4;Food-Retail
+159;ὀψοποιός;cook of fine foods;lewis;opsopoiós;5;Miscellaneous Services
+160;παιδοτρίβης;physical-trainer;harris;paidotríbēs;1;Education
+161;πανδοκεύς;inn-keeper;harris;pandokeús;5;Miscellaneous Services
+162;πανδοκεύτρια;inn-keeper;harris;pandokeútria;5;Miscellaneous Services
+163;περσικοποιός;maker of persikai;lewis;persikopoiós;8;Clothing
+164;πλινθουργός;brick-maker;lewis;plinthourgós;8;Building
+165;πλινθοφόρος;brick-carrier;lewis;plinthophóros;9;Building
+166;πλυνεύς;clothes-cleaner;harris;plyneús;7;Miscellaneous Services
+167;πλύντης;clothes-cleaner;harris;plýntēs;7;Miscellaneous Services
+168;πλύντρια;washerwoman;lewis;plýntria;7;Miscellaneous Services
+169;ποικιλτής;embroiderer;lewis;poikiltḗs;7;Clothing
+170;ποιμήν;shepherd;lewis;poimḗn;6;Food-Production
+171;πολόδαμνης;horse-breaker;lewis;polódamnēs;6;Transport
+172;πορθμεύς;ferryman;harris;porthmeús;9;Transport
+173;πόρνη;whore;harris;pórnē;5;Miscellaneous Services
+174;πορνοβοσκός;brothel-keeper;harris;pornoboskós;2;Miscellaneous Services
+175;πόρνος;whore;harris;pórnos;5;Miscellaneous Services
+176;πρίστης;sawyer;lewis;prístēs;7;Building
+177;προβατοκάπηλος;sheep-dealer;lewis;probatokápēlos;4;Food-Retail
+178;προβατοπώλης;sheep-dealer;lewis;probatopṓlēs;4;Food-Retail
+179;προμετρητής;surveyor;harris;prometrētḗs;0;Miscellaneous Services
+180;προρεύς;keeper of stores on ship;harris;proreús;3;Transport
+181;ῥάπτης;clothes-mender;lewis;rháptēs;7;Clothing
+182;ῥιζοπώλης;seller of medicinal roots;lewis;rhizopṓlēs;4;Retail
+183;ῥιζοτόμος;gatherer of medicinal roots;lewis;rhizotómos;6;Household Goods
+184;σακχυφάντης;sack-maker;lewis;sakchyphántēs;9;Household Goods
+185;σησαμοπώλης;sesame-seller;lewis;sēsamopṓlēs;4;Food-Retail
+186;σιδηροπώλης;iron-seller;lewis;sidēropṓlēs;4;Retail
+187;σιδηρουργός;iron-worker;lewis;sidērourgós;8;Metal-Working
+188;σινδονοπώλης;seller of fine cloth;lewis;sindonopṓlēs;4;Retail
+189;σιτοποιός;baker;lewis;sitopoiós;7;Food-Production
+190;σιτοπώλης;grain-dealer;lewis;sitopṓlēs;4;Food-Retail
+191;σκαφεύς;digger;harris;skapheús;9;Building
+192;σκευοποιός;maker of equipment;harris;skeuopoiós;8;Miscellaneous Services
+193;σκευοπώλης;seller of equipment;harris;skeuopṓlēs;4;Retail
+194;σκηνίτης;one who keeps a stall or tentmaker;harris;skēnítēs;7;Building
+195;σκηνογράφος;painter of scenery;harris;skēnográphos;1;Plastic Arts
+196;σκυλοδέψης;tanner of hides;harris;skylodépsēs;7;Clothing
+197;σκυτοτόμος;leather-worker;lewis;skytotómos;7;Clothing
+198;σπερματοπώλης;seed-seller;lewis;spermatopṓlēs;4;Food-Retail
+199;στεφανοποιός;wreath-weaver;lewis;stephanopoiós;9;Household Goods
+200;στεφανόπολις;wreath-seller;lewis;stephanópolis;4;Retail
+201;στυππειοπώλης;oakumseller;lewis;styppeiopṓlēs;4;Retail
+202;συβώτης;swineherd;lewis;sybṓtēs;6;Food-Production
+203;συριγγοποιός;maker of pipes;harris;syringopoiós;9;Plastic Arts
+204;συρμαιοπώλης;seller of emetics;lewis;syrmaiopṓlēs;4;Retail
+205;σχοινοπλόκος;rope-maker;lewis;schoinoplókos;7;Household Goods
+206;σωροποιός;Funeral-urn maker;lewis;sōropoiós;8;Miscellaneous Services
+207;ταινιόπολις;ribbon-seller;lewis;tainiópolis;4;Retail
+208;ταμίας;keeper of stores on estate;harris;tamías;3;Miscellaneous Services
+209;ταριχοπώλης;salt-fish seller;lewis;tarichopṓlēs;4;Food-Retail
+210;τέκτων;craftsman, joiner;harris;téktōn;9;Building
+211;τίτθη;wet-nurse;harris;títthē;6;Miscellaneous Services
+212;τοκιστής;lender or usurer;harris;tokistḗs;4;Finance
+213;τοξοποιός;bowyer;lewis;toxopoiós;8;Miscellaneous Services
+214;τορνευτής;lathe-turner;lewis;torneutḗs;8;Building
+215;τραπεζίτης;banker;harris;trapezítēs;3;Finance
+216;τραπεζοποιός;table attendant, one who lays out the table;harris;trapezopoiós;5;Miscellaneous Services
+217;τριηραύλης;flute-player for a trireme;harris;triēraúlēs;1;Performing Arts
+218;τροφός;nurse;harris;trophós;6;Miscellaneous Services
+219;τροχοποιός;wheelwright;lewis;trochopoiós;8;Transport
+220;τρυγήτρια;one who gathers fruit;harris;trygḗtria;6;Food-Production
+221;τυλυφάντης;cushion-maker;lewis;tylyphántēs;7;Household Goods
+222;τυροπώλης;cheesemonger;lewis;tyropṓlēs;4;Food-Retail
+223;ὑλοτόμος;woodcutter;lewis;hylotómos;9;Building
+224;ὑλοφόρος;wood-transporter;lewis;hylophóros;9;Transport
+225;ὑπηρέτης;assistant to architect;harris;hypērétēs;9;Building
+226;ὑπογραμματεύς;undersecretary;harris;hypogrammateús;3;Miscellaneous Services
+227;ὑποδηματοποιός;maker of hypodêmata;lewis;hypodēmatopoiós;8;Clothing
+228;ὑποδιδάσκαλος;assistant teacher;harris;hypodidáskalos;1;Education
+229;ὑποκριτής;reciter, declaimer, actor;harris;hypokritḗs;1;Performing Arts
+230;ὑφαντικός;weaver;lewis;hyphantikós;7;Clothing
+231;φαρμακοπώλης;seller of potions and drugs;lewis;pharmakopṓlēs;4;Retail
+232;φαρμακοτρίβης;drug-grinder;lewis;pharmakotríbēs;7;Clothing
+233;φορτηγός;trader;harris;phortēgós;4;Transport
+234;χαλκεύς;smith;lewis;chalkeús;8;Metal-Working
+235;χαριτόπολις;charm-seller;harris;charitópolis;4;Retail
+236;χιδροπώλης;wheaten-groat seller;lewis;chidropṓlēs;4;Food-Retail
+237;χοιροπώλης;pig-dealer;lewis;choiropṓlēs;4;Food-Retail
+238;χοροδιδάσκαλος;chorus-trainer;harris;chorodidáskalos;1;Education
+239;χρηματιστής;business-man;harris;chrēmatistḗs;4;Retail
+240;χρυσοπώλης;gold-seller;lewis;chrysopṓlēs;4;Retail
+241;χρυσοχόος;goldsmith;lewis;chrysochóos;8;Metal-Working
+242;χρυσώτης;gilder;harris;chrysṓtēs;7;Metal-Working
+243;χρυσωτρία;gilder;harris;chrysōtría;7;Metal-Working
+244;ψάλτρια;harp-player;lewis;psáltria;1;Performing Arts
+245;Μαία;midwife;harris;maîa;0;Miscellaneous Services
+246;ὑπηρέτησ;assistant to architect;harris;hypērétēs;9;Building
