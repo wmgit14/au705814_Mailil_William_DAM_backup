@@ -1,0 +1,436 @@
+---
+title: "Occupations and professions in the ancient Greek world"
+author: "William Mailil"
+date: "05-08-2026"
+output: "html_document"
+---
+##Libraries
+```{r}
+library(sf)
+library(arrow)
+library(tidyverse)
+library(scales)
+library(RColorBrewer)
+```
+
+##Folders
+```{r}
+data_dir   <- "data"
+output_dir <- "output"
+dir.create(data_dir,   showWarnings = FALSE, recursive = TRUE)
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+```
+
+
+**Loading and viewing the GIST dataset**
+```{r}
+GI_metadata <- read_csv("data/GI_metadata.csv")
+GIST <- read_parquet("data/GIST_v1-1.parquet")
+glimpse(GIST)
+head(GIST)
+```
+
+**Loading my catalog and applying it to the GIST dataset**
+```{r}
+# First i read the catalog .csv into R and turn it into an?object/vector?
+occupation <- read_csv2("data/occupations_translit_v1-5.csv")
+
+# Then i make a pattern that of the occupational terms
+pattern <- paste(occupation$term_greek_transliterated, collapse = "|")
+
+# Now I make a new object by applying the pattern to the lemmata column in GIST and extracting all the matches into a new column, matched_terms, and also excluding any inscriptions that did not contain a match. This is going to take a while.
+GIST %>% 
+  filter(str_detect(lemmata, regex(pattern, ignore_case = TRUE))) %>% 
+  mutate(matched_terms = str_extract_all(lemmata, regex(pattern, ignore_case = TRUE))) %>%
+  select(matched_terms, everything()) -> GIST_matched
+
+```
+
+**Wrangling the data**
+```{r}
+# I create a new object by keeping only the unique matches from a single row under the matched_terms column and I unnest the remaining matches into their own rows.
+GIST_matched_unnested <- GIST_matched %>%
+  mutate(matched_terms = lapply(matched_terms, unique)) %>%
+  unnest(matched_terms)
+
+# I make a new object that only contains the columns that I wish to work with.
+GIST_matched_unnested %>%
+  select(matched_terms, not_after, not_before, urban_context, urban_context_city, urban_context_pop_est, PHI_ID) -> GIST_matched_unnested_urban_contexts
+
+# I make a new object by joining the remaining columns from my catalog to the dataset.
+
+GIST_results <- GIST_matched_unnested_urban_contexts %>%
+  left_join(occupation %>% 
+              select(term_greek_transliterated, translation_eng, hisco_major, harris_sector), by = c("matched_terms" = "term_greek_transliterated"))
+
+```
+
+**Dividing the results in time**
+```{r}
+# I divide the data into relevant time periods now and urban_context.
+
+# Archaic period
+GIST_results %>%
+  filter(not_after>=-800&not_before<=-500, !is.na(urban_context)) -> GIST_results_archaic
+
+# Classical period
+GIST_results %>%
+  filter(not_after>=-499&not_before<=-323, !is.na(urban_context)) -> GIST_results_classical
+
+# Hellenistic period
+GIST_results %>%
+  filter(not_after>=-322&not_before<=-30, !is.na(urban_context)) -> GIST_results_hellenistic
+
+# Roman period
+GIST_results %>%
+  filter(not_after>=-29&not_before<=395, !is.na(urban_context)) -> GIST_results_roman
+
+```
+
+
+##plots for harris_sector
+```{r}
+use_strict_window <- TRUE
+year_min <- -800
+year_max <- 395
+urban_order <- c("large city", "medium city", "small city", "rural area")
+palette_base <- "Paired"
+legend_title <- "Harris sector"
+
+df <- GIST_results %>%
+  filter(!is.na(not_before), !is.na(not_after)) %>%
+  filter(not_before != "", not_after != "") %>%
+  mutate(
+    start_year = as.numeric(not_before),
+    end_year   = as.numeric(not_after)
+  ) %>%
+  filter(start_year >= year_min, end_year <= year_max) %>%
+  mutate(
+    urban_context2 = case_when(
+      str_detect(tolower(urban_context), "large")  ~ "large city",
+      str_detect(tolower(urban_context), "medium") ~ "medium city",
+      str_detect(tolower(urban_context), "small")  ~ "small city",
+      str_detect(tolower(urban_context), "rural")  ~ "rural area",
+      TRUE ~ as.character(urban_context)
+    )
+  ) %>%
+  mutate(urban_context2 = factor(urban_context2, levels = urban_order)) %>%
+  filter(!is.na(urban_context2) & !is.na(harris_sector))
+
+#Ensure one row per inscription (PHI_ID)
+df <- df %>% distinct(PHI_ID, matched_terms, urban_context2, harris_sector, start_year, end_year, .keep_all = TRUE)
+
+#Counting
+counts <- df %>%
+  group_by(urban_context2, harris_sector) %>%
+  summarise(n = n(), .groups = "drop")
+
+totals <- df %>%
+  group_by(urban_context2) %>%
+  summarise(total = n(), .groups = "drop")
+
+plotdat <- counts %>%
+  left_join(totals, by = "urban_context2") %>%
+  mutate(percent = (n / total) * 100)
+
+#Stacking sectors
+sector_order <- plotdat %>%
+  group_by(harris_sector) %>%
+  summarise(total_n = sum(n, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total_n)) %>%
+  pull(harris_sector)
+
+plotdat <- plotdat %>% mutate(harris_sector = factor(harris_sector, levels = sector_order))
+
+#Colors
+n_sectors <- n_distinct(plotdat$harris_sector)
+max_brewer <- brewer.pal.info[palette_base, "maxcolors"]
+if (n_sectors <= max_brewer) {
+  sector_cols <- brewer.pal(n_sectors, palette_base)
+} else {
+  sector_cols <- colorRampPalette(brewer.pal(max_brewer, palette_base))(n_sectors)
+}
+names(sector_cols) <- levels(plotdat$harris_sector)
+
+#Percent plot
+p_pct <- ggplot(plotdat, aes(x = urban_context2, y = percent, fill = harris_sector)) +
+  geom_col(color = "black", size = 0.15) +
+  scale_y_continuous(labels = function(x) paste0(x, "%"), expand = expansion(mult = c(0, 0.05))) +
+  scale_fill_manual(values = sector_cols, name = legend_title) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(margin = margin(r = 8)),
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    panel.border = element_rect(fill = NA, color = "black", size = 1.2),
+    legend.position = "right",
+    legend.key.size = unit(0.6, "lines"),
+    plot.margin = margin(t = 8, r = 8, b = 8, l = 8)
+  ) +
+  labs(y = NULL, title = "Percent of inscriptions sorted by Harris sector")
+
+#Save percent plot
+ggsave(filename = file.path(output_dir, "harris_percent_by_urban_context.png"),
+       plot     = p_pct,
+       width    = 7.5,
+       height   = 6,
+       dpi      = 300,
+       units    = "in")
+print(p_pct)
+
+
+#Counts total plot
+#Preparing labels
+max_total <- max(totals$total, na.rm = TRUE)
+totals_label <- totals %>% mutate(label_y = total + max_total * 0.06)
+
+p_counts <- ggplot(plotdat, aes(x = urban_context2, y = n, fill = harris_sector)) +
+  geom_col(color = "black", size = 0.15) +
+  scale_fill_manual(values = sector_cols, name = legend_title) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(margin = margin(r = 8)),
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "white", colour = NA),
+    panel.border = element_rect(fill = NA, color = "black", size = 1.2),
+    legend.position = "right",               # show legend like the percent plot
+    legend.key.size = unit(0.6, "lines"),
+    plot.margin = margin(t = 12, r = 8, b = 8, l = 8)
+  ) +
+  labs(y = "Total inscriptions by urban context", title = "Number of inscriptions sorted by Harris sector") +
+  geom_text(data = totals_label, aes(x = urban_context2, y = label_y, label = total),
+            inherit.aes = FALSE, vjust = 0, size = 4)
+
+y_max_counts <- max(plotdat %>% group_by(urban_context2) %>% summarise(sum_n = sum(n)) %>% pull(sum_n)) * 1.12
+p_counts <- p_counts + scale_y_continuous(limits = c(0, y_max_counts), expand = c(0,0))
+
+#Save counts plot
+ggsave(filename = file.path(output_dir, "harris_counts_by_urban_context.png"),
+       plot     = p_counts,
+       width    = 7.5,
+       height   = 6,
+       dpi      = 300,
+       units    = "in")
+print(p_counts)
+
+```
+
+##mean period plots
+```{r}
+safe_outfile <- "safe_hisco_major_means_by_period_combined.png"
+safe_plot_width <- 14
+safe_plot_height <- 4.5
+safe_dpi <- 300
+
+#Combined label
+safe_combined_label <- "combined"
+safe_combined_position <- "last"   # "first" or "last"
+
+#Dataframes from GIST_results
+safe_period_datasets <- list(
+  Archaic     = GIST_results_archaic,
+  Classical   = GIST_results_classical,
+  Hellenistic = GIST_results_hellenistic,
+  Roman       = GIST_results_roman
+)
+
+safe_standardize_urban <- function(x) {
+  x2 <- tolower(as.character(x))
+  dplyr::case_when(
+    str_detect(x2, "large")  ~ "large",
+    str_detect(x2, "medium") ~ "medium",
+    str_detect(x2, "small")  ~ "small",
+    str_detect(x2, "rural")  ~ "rural",
+    TRUE ~ x2
+  )
+}
+
+#Period plots
+safe_core_levels <- c("large", "medium", "small", "rural")
+
+safe_summary_list <- imap(safe_period_datasets, ~{
+  df_in <- .x
+  period_name <- .y
+  
+  df_clean <- df_in %>%
+    distinct(PHI_ID, .keep_all = TRUE) %>%
+    mutate(safe_urban = safe_standardize_urban(urban_context))
+  
+  safe_per_urban <- df_clean %>%
+    group_by(safe_urban) %>%
+    summarise(
+      safe_mean_hisco = mean(hisco_major, na.rm = TRUE),
+      safe_n = sum(!is.na(hisco_major)),
+      .groups = "drop"
+    )
+  
+  safe_per_urban <- safe_per_urban %>%
+    complete(safe_urban = safe_core_levels, fill = list(safe_mean_hisco = NA_real_, safe_n = 0))
+  
+#Combined mean
+  safe_combined_rows <- df_clean %>% filter(safe_urban %in% safe_core_levels)
+  safe_combined_mean <- if (nrow(safe_combined_rows) == 0) NA_real_ else mean(safe_combined_rows$hisco_major, na.rm = TRUE)
+  safe_combined_n    <- sum(!is.na(safe_combined_rows$hisco_major))
+  
+  safe_per_urban <- safe_per_urban %>%
+    bind_rows(tibble(safe_urban = safe_combined_label, safe_mean_hisco = safe_combined_mean, safe_n = safe_combined_n)) %>%
+    mutate(safe_period = period_name)
+  
+  safe_per_urban
+})
+
+safe_summary_df <- bind_rows(safe_summary_list)
+
+safe_plot_df <- safe_summary_df %>%
+  mutate(
+    safe_urban = factor(safe_urban, levels = safe_levels_final),
+    safe_urban_label = as.character(safe_urban),
+    safe_period = factor(safe_period, levels = c("Archaic", "Classical", "Hellenistic", "Roman"))
+  )
+
+#Mean plot
+safe_plot <- ggplot(safe_plot_df, aes(x = safe_urban, y = safe_mean_hisco, fill = safe_urban)) +
+  geom_col(color = "black", width = 0.75, show.legend = FALSE) +
+  facet_wrap(~ safe_period, nrow = 1, scales = "fixed") +
+  geom_text(aes(label = ifelse(is.na(safe_mean_hisco), "NA", sprintf("%.2f", safe_mean_hisco))),
+            vjust = -0.4, size = 3.6) +
+  geom_text(aes(y = 0, label = paste0("n=", safe_n)), vjust = 1.9, size = 3.2, color = "black") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  labs(x = NULL, y = "Mean HISCO score",
+       title = paste0("Mean HISCO score by urban context for each time period")) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    strip.background = element_rect(fill = "grey95", color = NA),
+    panel.border = element_rect(fill = NA, color = "black", size = 0.7)
+  )
+
+ggsave(filename = file.path(output_dir, safe_outfile),
+       plot     = safe_plot,
+       width    = safe_plot_width,
+       height   = safe_plot_height,
+       dpi      = safe_dpi,
+       units    = "in")
+print(safe_plot)
+
+```
+
+##top 20 plots
+```{r}
+safe_top_n <- 20
+safe_label_wrap_width <- 40
+safe_seed <- 42
+set.seed(safe_seed)
+safe_period_levels <- c("Archaic", "Classical", "Hellenistic", "Roman")
+safe_plot_dpi <- 300
+
+#preparing period-labelled dataframe
+safe_df_perioded <- GIST_results %>%
+  filter(!is.na(not_before), !is.na(not_after)) %>%
+  filter(not_before != "", not_after != "") %>%
+  mutate(
+    safe_start_year = as.numeric(not_before),
+    safe_end_year   = as.numeric(not_after)
+  ) %>%
+  filter(!is.na(safe_start_year), !is.na(safe_end_year)) %>%
+  mutate(
+    safe_period = case_when(
+      (safe_end_year >= -800) & (safe_start_year <= -500)  ~ "Archaic",
+      (safe_end_year >= -499) & (safe_start_year <= -323)  ~ "Classical",
+      (safe_end_year >= -322) & (safe_start_year <= -30)   ~ "Hellenistic",
+      (safe_end_year >= -29)  & (safe_start_year <= 395)   ~ "Roman",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(safe_period)) %>%
+  distinct(PHI_ID, matched_terms, translation_eng, safe_period, .keep_all = TRUE) %>%
+  mutate(safe_period = factor(safe_period, levels = safe_period_levels))
+
+# loop one plot per period
+safe_plots_list <- list()
+for (prd in safe_period_levels) {
+  safe_period_rows <- safe_df_perioded %>% filter(safe_period == prd)
+
+  out_fname <- file.path(output_dir,
+                        paste0("top", safe_top_n, "_matched_terms_with_translation_", prd, ".png"))
+
+  if (nrow(safe_period_rows) == 0) {
+    p_null <- ggplot() +
+      annotate("text", x = 0.5, y = 0.5, label = paste0("No data for ", prd)) +
+      theme_void() + ggtitle(paste0("Top ", safe_top_n, " matched_terms — ", prd))
+    safe_plots_list[[prd]] <- p_null
+    ggsave(filename = out_fname, plot = p_null, width = 8, height = 6, dpi = safe_plot_dpi, units = "in")
+    next
+  }
+
+#frequency and translation per matched_terms
+  safe_term_summary <- safe_period_rows %>%
+    distinct(PHI_ID, matched_terms, translation_eng) %>%
+    group_by(matched_terms) %>%
+    summarise(
+      freq = n_distinct(PHI_ID),
+      translation = {
+        trans_tab <- table(translation_eng, useNA = "no")
+        if (length(trans_tab) == 0) NA_character_ else names(trans_tab)[which.max(trans_tab)]
+      },
+      .groups = "drop"
+    ) %>%
+    arrange(desc(freq))
+
+  safe_top_terms <- safe_term_summary %>% slice_head(n = safe_top_n)
+
+# combined label
+  safe_top_terms <- safe_top_terms %>%
+    mutate(
+      combined_label = if_else(is.na(translation) | translation == "",
+                               matched_terms,
+                               paste0(matched_terms, " — ", translation)),
+      combined_label_wrapped = stringr::str_wrap(combined_label, width = safe_label_wrap_width)
+    ) %>%
+    mutate(combined_label_wrapped = forcats::fct_reorder(combined_label_wrapped, freq))
+
+  p <- ggplot(safe_top_terms, aes(x = combined_label_wrapped, y = freq)) +
+    geom_col(fill = "steelblue") +
+    coord_flip() +
+    theme_minimal(base_size = 12) +
+    labs(
+      x = NULL,
+      y = "Distinct inscriptions",
+      title = paste0("Top ", nrow(safe_top_terms), " occupations — ", prd)
+    ) +
+    theme(
+      plot.title = element_text(face = "bold"),
+      axis.text.y = element_text(size = 9)
+    )
+
+  print(p)
+  ggsave(filename = out_fname,
+         plot = p,
+         width = 9,
+         height = max(5, nrow(safe_top_terms) * 0.28),
+         dpi = safe_plot_dpi,
+         units = "in")
+
+  safe_plots_list[[prd]] <- p
+}
+```
+
+
+##writting this into a parquet file
+```{r}
+
+write_parquet(GIST_results, "data/GIST_results.parquet")
+
+read_parquet("data/GIST_results.parquet") -> read_GIST_results
+
+# yeah parquet works!
+
+```
+
+
