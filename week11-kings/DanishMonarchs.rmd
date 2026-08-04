@@ -1,0 +1,120 @@
+---
+title: "Danish Kings"
+author: "William Mailil"
+date: "26-05-2026"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here I will be loading the kings.csv into R using the `tidyverse` package to calculate and explore the kings' duration of reign with pipes `%>%` in `dplyr` and plot it over time.
+
+## Loading the kings.csv
+
+Bellow I my create a `kings` object using the `tidyverse` read_csv function because the kings.csv has it's columns separated by commas. I have tried other functions, read.csv and read_csv give the object 11 columns, read.csv2 and read_csv2 only give the object 1 column. This is because read.csv2 and read_csv2 work for semicolon separated values. After the object has been created I use class() to inspect it. The object now contains "spec_tbl_df" "tbl_df" "tbl" "data.frame".
+
+```{r eval=TRUE}
+library(tidyverse)
+library(here)
+
+kings <-read_csv("data/kings.csv", na=c("NULL",""))
+
+class(kings)
+head(kings)
+glimpse(kings)
+
+```
+
+## Calculating the duration of reign for all rulers
+I use the `mutate` function by subtracting the `Start_year` from the `End_year` columns and tell R to ignore the rows in these which are blank. The result is made into a new column called `duration`in a new object.
+
+```{r}
+# YOUR CODE
+kings %>% 
+  filter(!is.na(Start_year)&!is.na(End_year)) %>% 
+  mutate(duration=End_year-Start_year) -> kings_duration
+
+kings_duration %>% 
+  select(duration)
+
+```
+
+
+## Calculating the average duration of reign for all rulers
+Same as above except in the final step i use the `summarize` function to calculate the mean duration.
+
+```{r}
+# YOUR CODE
+kings_duration %>% 
+  select(duration) %>% 
+  summarize(mean_duration = mean(duration))
+
+```
+
+## How many and which kings enjoyed a longer-than-average duration of reign?
+I use the `filter()` function on the `duration` column on `kings_duration` object. I display the result and count the rows with `count()`
+
+```{r}
+# YOUR CODE
+kings_duration %>% 
+  filter(duration>19.57692)
+
+kings_duration %>% 
+  filter(duration>19.57692) %>% 
+  count()
+
+```
+
+
+## How many days did the three longest-ruling monarchs rule? 
+
+First I sort the rulers by `duration` in the descending order. Then I select the three longest-ruling monarchs with the `slice_max()` function. Lastly I use `mutate()` to create the `Days` column where you calculate the total number of days they ruled
+* BONUS: consider the transition year (with 366 days) in your calculation!
+
+```{r}
+# YOUR CODE
+kings_duration %>% 
+  filter(duration>19.57692) %>% 
+  select(Name,duration) %>% 
+  arrange(desc(duration))
+
+kings_duration %>% 
+  filter(duration>19.57692) %>% 
+  select(Name, duration) %>% 
+  slice_max(duration,n=3)
+
+
+kings_duration %>% 
+  mutate(days = duration*365) -> kings_duration_days
+
+# Four rulers show up because I am working with years so two rulers share the number three spot.
+
+kings_duration_days %>% 
+  select(Name, days) %>% 
+  slice_max(days,n=3)
+
+
+```
+
+
+## Plotting the kings' duration of reign through time
+Before I plot the duration of reign column in `ggplot` with `geom_point()` and  `geom_smooth()` I should make a new column `midyear` by adding `Sart_year` to `duration` divided by two.
+I can now plot `Mid_year` along the x-axis and `duration` along y-axis
+* BONUS: add a title, nice axis labels to the plot and make the theme B&W and font bigger to make it nice and legible!
+
+```{r}
+# YOUR CODE
+kings_duration_days %>% 
+  mutate(Mid_year=Start_year+duration/2) -> kings_duration_days_midyear
+
+kings_duration_days_midyear %>% 
+  ggplot(aes(x = Mid_year, y = duration))+geom_point()+geom_smooth()+
+  geom_point(color="red")+
+  theme_bw() +
+  theme(panel.grid = element_blank())+
+  labs(title = "Kings' duration of reign through time",
+       x = "Middle of reign",
+       y = "Duration of reign in years")
+```
